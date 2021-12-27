@@ -3,6 +3,7 @@ from django.http import HttpResponse # http의 응답
 from .models import Question
 from django.utils import timezone
 from .forms import QuestionForm,AnswerForm
+from django.core.paginator import Paginator
 # Create your views here.
 # 응답 꾸러미들
 
@@ -10,8 +11,16 @@ def index(request):
     '''
     pybo 목록 출력
     '''
+    page = request.GET.get('page',1)  # 페이지 / GET방식으로 page를 파라미터로 가져올 때 사용, 파라미터 없이 들어올 때 dafault값을 1로 줌.
+
+    # 조회
     question_list = Question.objects.order_by('-create_date') # -로 역순
-    context = {'question_list':question_list}
+
+    # 페이징
+    paginator = Paginator(question_list,10)  # 한 페이지당 개수
+    page_obj = paginator.get_page(page)
+
+    context = {'question_list':page_obj}
     # return HttpResponse('Hi pybo') # Hi pybo를 response해라
     return render(request,'pybo/question_list.html',context)
 
