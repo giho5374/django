@@ -21,6 +21,7 @@ from pybo import views # pybo의 views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('pybo/',views.index), # endpoint : pybo, response : index
+    path('',views.index,name='index'),
+    path('common/',include('common.urls')),
     path('pybo/',include('pybo.urls')) # pybo/로 연결되는 endpoint는 전부 pybo.urls에서 가지고온다.
 ]
