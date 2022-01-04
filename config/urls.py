@@ -17,11 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path,include
-from pybo import views # pybo의 views
+from pybo.views import base_views # pybo의 views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.index,name='index'),
+    path('',base_views.index,name='index'),
     path('common/',include('common.urls')),
     path('pybo/',include('pybo.urls')) # pybo/로 연결되는 endpoint는 전부 pybo.urls에서 가지고온다.
 ]
