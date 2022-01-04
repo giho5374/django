@@ -1,5 +1,5 @@
 from django import forms
-from pybo.models import Question,Answer
+from pybo.models import Question,Answer,Comment
 
 class QuestionForm(forms.ModelForm): # forms.ModelForm을 상속받은 모델 폼
     class Meta: # 장고 모델폼은 Meta 내부 클래스를 반드시 포함해야함. 모델 폼이 사용할 모델과 필드를 작성.
@@ -16,4 +16,12 @@ class AnswerForm(forms.ModelForm):
         fields = ['content']
         labels = {
             'content':'답변 내용',
+        }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        labels = {
+            'content' : '댓글 내용'
         }
