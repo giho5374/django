@@ -16,7 +16,7 @@ Including another URLconf
 # url 꾸러미들.
 
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from pybo.views import base_views # pybo의 views
 
 urlpatterns = [
