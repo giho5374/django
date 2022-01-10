@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render,get_object_or_404
 from ..models import Question
-from django.db.models import Q
+from django.db.models import Q, Count
 
 def index(request):  # 초기화면
     '''
@@ -9,8 +9,17 @@ def index(request):  # 초기화면
     '''
     page = request.GET.get('page', 1)  # 페이지 / GET방식으로 page를 파라미터로 가져올 때 사용, 파라미터 없이 들어올 때 dafault값을 1로 줌.
     kw = request.GET.get('kw','')  # 검색 / 없어도 됨
+    so = request.GET.get('so', 'recent')
     # 조회
-    question_list = Question.objects.order_by('-create_date')  # -로 역순
+    if so == 'recommend':
+        question_list = Question.objects.annotate(
+            num_voter = Count('voter')).order_by('-num_voter','create_date')
+    elif so == 'popular':
+        question_list = Question.objects.annotate(
+            num_answer = Count('answer')).order_by('-num_answer','create_date')
+    else :
+        question_list = Question.objects.order_by('-create_date')  # -로 역순
+
     if kw:
         question_list = question_list.filter(
             Q(subject__icontains=kw) |
