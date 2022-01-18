@@ -32,7 +32,7 @@ def index(request):  # 초기화면
     paginator = Paginator(question_list,10)  # 한 페이지당 개수
     page_obj = paginator.get_page(page)  # html에 전달할 객
 
-    context = {'question_list': page_obj, 'page': page, 'kw': kw}
+    context = {'question_list': page_obj, 'page': page, 'kw': kw,'so':so}
     # return HttpResponse('Hi pybo') # Hi pybo를 response해라
     return render(request,'pybo/question_list.html',context)
 
