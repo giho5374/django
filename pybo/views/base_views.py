@@ -37,11 +37,16 @@ def index(request):  # 초기화면
     return render(request,'pybo/question_list.html',context)
 
 
+
 def detail(request,question_id):  # 질문 상세 화면
     '''
     pybo 내용 출력
     '''
     # question = Question.objects.get(id = question_id)
+    page = request.GET.get('page',1)
     question = get_object_or_404(Question, pk=question_id)  # Qustion 모델에서 get으로 전달받은 question_id가 없으면 404 발생시킴
-    context = {'question': question}
+    answer_list = question.answer_set.all().annotate(num_voter = Count('voter')).order_by('-num_voter')
+    paginator = Paginator(answer_list,5)
+    page_obj = paginator.get_page(page)
+    context = {'question': question,'answer_list':page_obj,'page':page}
     return render(request, 'pybo/question_detail.html', context)
